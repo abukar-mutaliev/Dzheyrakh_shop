@@ -1,26 +1,180 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-primary: var(--primary);
+  --color-accent: var(--accent);
+  --font-sans: var(--font-manrope);
+  --font-serif: var(--font-literata), Georgia, serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background-color: var(--background);
 }
 
 body {
-  background: var(--background);
+  background: transparent;
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-manrope), sans-serif;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  z-index: -1;
+  inset: -14%;
+  pointer-events: none;
+  background:
+    radial-gradient(980px 480px at 18% 0%, color-mix(in srgb, var(--accent) 26%, transparent), transparent 62%),
+    radial-gradient(820px 440px at 88% 8%, color-mix(in srgb, var(--primary) 18%, transparent), transparent 64%);
+  animation: drift 26s ease-in-out infinite alternate;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--accent) 34%, white);
+}
+
+:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--primary) 72%, white);
+  outline-offset: 3px;
+}
+
+.eyebrow {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.panel {
+  border-radius: 1.75rem;
+  border: 1px solid color-mix(in srgb, var(--foreground) 10%, transparent);
+  background: color-mix(in srgb, white 90%, var(--background));
+  box-shadow: 0 24px 50px -34px color-mix(in srgb, var(--primary) 62%, transparent);
+}
+
+.label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 650;
+}
+
+.field {
+  margin-top: 0.4rem;
+  width: 100%;
+  border-radius: 1rem;
+  border: 1px solid color-mix(in srgb, var(--foreground) 14%, transparent);
+  background: white;
+  padding: 0.85rem 1rem;
+  color: var(--foreground);
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.field::placeholder {
+  color: color-mix(in srgb, var(--foreground) 38%, transparent);
+}
+
+.field:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 14%, transparent);
+}
+
+.field[readonly] {
+  background: color-mix(in srgb, var(--primary) 5%, white);
+  color: color-mix(in srgb, var(--foreground) 72%, transparent);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.85rem 1.4rem;
+  font-size: 0.925rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.45s ease,
+    box-shadow 0.45s ease;
+}
+
+.btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  filter: brightness(1.06);
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+  transform: none;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: var(--background);
+  box-shadow: 0 14px 28px -16px var(--primary);
+}
+
+.btn-accent {
+  background: var(--accent);
+  color: white;
+  box-shadow: 0 14px 28px -16px var(--accent);
+}
+
+.btn-quiet {
+  background: color-mix(in srgb, var(--foreground) 6%, white);
+  color: var(--foreground);
+  box-shadow: none;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 0.45rem 0.95rem;
+  font-size: 0.875rem;
+  font-weight: 650;
+  text-decoration: none;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.chip-idle {
+  border-color: color-mix(in srgb, var(--foreground) 8%, transparent);
+  background: color-mix(in srgb, white 72%, transparent);
+  color: var(--foreground);
+}
+
+.chip-idle:hover {
+  background: white;
+}
+
+.chip-active {
+  background: var(--primary);
+  color: var(--background);
+}
+
+@keyframes drift {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(-2.5%, 1.5%, 0) scale(1.06);
+  }
 }

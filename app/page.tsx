@@ -1,69 +1,123 @@
 import Image from "next/image";
+import Link from "next/link";
+import { Suspense, ViewTransition } from "react";
+import { PageTransition } from "@/components/page-transition";
+import { ProductArt } from "@/components/product-art";
+import { ProductPhoto } from "@/components/product-photo";
+import { getProducts } from "@/lib/catalog";
+import { shopConfig } from "@/lib/shop-config";
+
+const steps = [
+  ["Выбираете", "На полке только чай, мёд и варенье — без длинного каталога."],
+  ["Указываете получение", "Самовывоз или курьер. Адрес нужен только если заказ везут."],
+  ["Платите через СБП", "Оплата открывается в ЮKassa. Карту на сайте вводить не нужно."],
+];
+
+async function CategoryTiles({
+  categories,
+}: {
+  categories: { slug: string; name: string }[];
+}) {
+  const { products } = await getProducts();
+  return (
+    <div className="grid grid-cols-1 gap-3 min-[520px]:grid-cols-3 sm:gap-4 lg:grid-cols-1">
+      {categories.map((category, index) => {
+        const cover = products.find((product) => product.category_slug === category.slug && product.images.length > 0);
+        return (
+          <div key={category.slug} className="rise-in" style={{ animationDelay: `${index * 90}ms` }}>
+          <Link
+            href={`/catalog/${category.slug}`}
+            transitionTypes={["nav-forward"]}
+            className="panel lift group relative block h-full overflow-hidden"
+          >
+            {cover ? (
+              <ViewTransition name={`product-${cover.slug}`} share="morph" enter="frame" exit="frame" default="none">
+                <ProductPhoto
+                  title={cover.title}
+                  category={category.slug}
+                  images={cover.images}
+                  className="h-56 w-full sm:h-64 lg:h-44"
+                />
+              </ViewTransition>
+            ) : (
+              <ProductArt category={category.slug} className="h-56 sm:h-64 lg:h-44" />
+            )}
+            <span className="absolute bottom-4 left-4 rounded-full bg-white/90 px-3 py-1 text-sm font-semibold text-primary">
+              {category.name}
+            </span>
+          </Link>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
 
 export default function Home() {
+  const { shop, contacts, categories } = shopConfig;
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <PageTransition>
+    <main className="mx-auto w-full max-w-5xl px-4 py-8 sm:py-12">
+      <section className="grid items-start gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-14">
+        <div className="rise-in">
+          <Image
+            src={shopConfig.brand.logo}
+            alt=""
+            width={758}
+            height={790}
+            sizes="(min-width: 640px) 220px, 168px"
+            preload
+            className="float-soft h-36 w-auto sm:h-44"
+          />
+          <p className="eyebrow mt-6">Чай, мёд и варенье</p>
+          <h1 className="mt-3 max-w-xl font-serif text-5xl leading-[1.05] text-balance sm:text-6xl">{shop.name}</h1>
+          <p className="mt-4 max-w-xl text-lg leading-8 text-foreground/75">{shop.tagline}</p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link href={`/catalog/${categories[0].slug}`} transitionTypes={["nav-forward"]} className="btn btn-primary">
+              Смотреть {categories[0].name.toLowerCase()}
+            </Link>
+            {contacts.telegram ? (
+              <a href={contacts.telegram} className="btn btn-quiet" target="_blank" rel="noreferrer">
+                Написать в Telegram
+              </a>
+            ) : null}
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <Suspense
+          fallback={
+            <div className="grid grid-cols-1 gap-3 min-[520px]:grid-cols-3 sm:gap-4 lg:grid-cols-1">
+              {categories.map((category) => (
+                <div key={category.slug} className="panel h-56 sm:h-64 lg:h-44" />
+              ))}
+            </div>
+          }
+        >
+          <CategoryTiles categories={categories} />
+        </Suspense>
+      </section>
+
+      <section className="mt-16 grid gap-4 sm:grid-cols-3">
+        {steps.map(([title, text], index) => (
+          <div key={title} className="rise-in" style={{ animationDelay: `${180 + index * 90}ms` }}>
+            <article className="panel lift h-full p-5">
+              <p className="text-xs font-semibold tracking-[0.16em] text-accent">0{index + 1}</p>
+              <h2 className="mt-3 font-serif text-2xl">{title}</h2>
+              <p className="mt-2 text-sm leading-6 text-foreground/70">{text}</p>
+            </article>
+          </div>
+        ))}
+      </section>
+
+      <section className="panel rise-in mt-8 flex flex-col gap-4 px-6 py-5 sm:flex-row sm:items-center sm:justify-between" style={{ animationDelay: "460ms" }}>
+        <div>
+          <p className="eyebrow">Где мы</p>
+          <p className="mt-2 text-sm leading-6 text-foreground/75">{contacts.address}</p>
         </div>
-      </main>
-    </div>
+        <a className="text-lg font-semibold text-primary" href={`tel:${contacts.phone.replace(/[^\d+]/g, "")}`}>
+          {contacts.phone}
+        </a>
+      </section>
+    </main>
+    </PageTransition>
   );
 }
