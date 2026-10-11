@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Literata, Manrope } from "next/font/google";
+import { designBootScript } from "@/lib/designs";
 import { shopConfig } from "@/lib/shop-config";
 import { CartProvider } from "@/components/cart-provider";
 import { MotionStyles } from "@/components/motion-styles";
@@ -24,16 +25,15 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
-  const brand = {
-    "--background": shopConfig.brand.colors.background,
-    "--foreground": shopConfig.brand.colors.foreground,
-    "--primary": shopConfig.brand.colors.primary,
-    "--accent": shopConfig.brand.colors.accent,
-  } as React.CSSProperties;
-
   return (
-    <html lang={shopConfig.shop.locale} className={`${manrope.variable} ${literata.variable} h-full`} style={brand}>
+    <html
+      lang={shopConfig.shop.locale}
+      data-design="shelf"
+      suppressHydrationWarning
+      className={`${manrope.variable} ${literata.variable} h-full`}
+    >
       <body className="flex min-h-full flex-col antialiased">
+        <script dangerouslySetInnerHTML={{ __html: designBootScript() }} />
         <MotionStyles />
         <CartProvider>
           <SiteHeader />

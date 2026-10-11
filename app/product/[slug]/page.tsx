@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
 import { AddToCartButton } from "@/components/add-to-cart-button";
 import { PageTransition } from "@/components/page-transition";
 import { ImageSlider } from "@/components/image-slider";
@@ -25,8 +24,8 @@ async function ProductScreen({ params }: { params: Promise<{ slug: string }> }) 
   const category = findCategory(product.category_slug);
 
   return (
-    <article className="grid items-start gap-8 md:grid-cols-2">
-      <div className="panel overflow-hidden md:sticky md:top-24">
+    <article className="product-layout grid items-start gap-8 md:grid-cols-2">
+      <div className="product-media panel overflow-hidden md:sticky md:top-24">
         <ImageSlider
           title={product.title}
           category={product.category_slug}
@@ -35,7 +34,7 @@ async function ProductScreen({ params }: { params: Promise<{ slug: string }> }) 
           className="h-80 w-full md:h-[28rem]"
         />
       </div>
-      <div>
+      <div className="product-copy">
         <Link
           href={category ? `/catalog/${category.slug}` : "/"}
           transitionTypes={["nav-back"]}
@@ -49,7 +48,7 @@ async function ProductScreen({ params }: { params: Promise<{ slug: string }> }) 
         <p className={`mt-2 text-sm ${product.stock <= 5 ? "font-medium text-accent" : "text-foreground/60"}`}>
           {stockCopy(product.stock)}
         </p>
-        <div className="mt-6">
+        <div className="product-buy mt-6">
           <AddToCartButton product={product} />
         </div>
         <ul className="mt-8 space-y-2 text-sm leading-6 text-foreground/70">
@@ -83,9 +82,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
   return (
     <PageTransition>
     <main className="mx-auto w-full max-w-5xl px-4 py-12 sm:py-16">
-      <Suspense fallback={<p className="text-foreground/60">Открываем банку...</p>}>
-        <ProductScreen params={params} />
-      </Suspense>
+      <ProductScreen params={params} />
     </main>
     </PageTransition>
   );

@@ -42,7 +42,7 @@ export function CheckoutPanel({
 
   return (
     <form
-      className="grid items-start gap-6 md:grid-cols-2"
+      className="checkout-form grid items-start gap-6 md:grid-cols-2"
       onSubmit={async (event) => {
         event.preventDefault();
         const form = new FormData(event.currentTarget);
@@ -96,8 +96,8 @@ export function CheckoutPanel({
               return (
                 <label
                   key={method.id}
-                  className={`choice flex cursor-pointer items-center justify-between gap-3 rounded-2xl border px-4 py-3 text-sm ${
-                    active ? "border-primary bg-primary/5" : "border-foreground/10 bg-white"
+                  className={`choice flex cursor-pointer items-center justify-between gap-3 border px-4 py-3 text-sm ${
+                    active ? "choice-active" : "choice-idle"
                   }`}
                 >
                   <span className="font-medium">
@@ -141,7 +141,7 @@ export function CheckoutPanel({
           <textarea name="comment" className="field" rows={3} placeholder="Например, домофон или удобное время" />
         </label>
       </section>
-      <section className="panel h-fit space-y-4 p-6 md:sticky md:top-24">
+      <section className="checkout-pay panel h-fit space-y-4 p-6 md:sticky md:top-24">
         <h2 className="font-serif text-2xl">К оплате</h2>
         <ul className="space-y-3 text-sm">
           {items.map((item) => (

@@ -21,7 +21,7 @@ export function CartView() {
   }
 
   return (
-    <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1.4fr)_minmax(16rem,0.8fr)]">
+    <div className="cart-layout grid items-start gap-6 lg:grid-cols-[minmax(0,1.4fr)_minmax(16rem,0.8fr)]">
       <ul className="panel divide-y divide-foreground/10">
         {items.map((item) => (
           <li key={item.productId} className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
@@ -32,7 +32,7 @@ export function CartView() {
               <p className="mt-1 text-sm text-foreground/60 tabular-nums">{formatPrice(item.priceKopecks)}</p>
             </div>
             <div className="flex flex-wrap items-center gap-4">
-              <div className="inline-flex items-center rounded-full border border-foreground/10 bg-white">
+              <div className="qty-stepper inline-flex items-center">
                 <button
                   type="button"
                   className="qty-btn h-10 w-10 rounded-full text-lg leading-none disabled:opacity-30"
@@ -63,7 +63,7 @@ export function CartView() {
           </li>
         ))}
       </ul>
-      <aside className="panel h-fit p-6 lg:sticky lg:top-24">
+      <aside className="cart-summary panel h-fit p-6 lg:sticky lg:top-24">
         <p className="eyebrow">К оплате</p>
         <p key={total} className="qty-pop mt-3 font-serif text-4xl text-primary tabular-nums">
           {formatPrice(total)}

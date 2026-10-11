@@ -11,7 +11,7 @@ export function CartLink() {
       {count > 0 ? (
         <span
           key={count}
-          className="cart-pop inline-flex min-w-5 items-center justify-center rounded-full bg-accent px-1.5 text-[11px] leading-5 text-white"
+          className="count-pip cart-pop inline-flex min-w-5 items-center justify-center rounded-full bg-accent px-1.5 text-[11px] leading-5"
         >
           {count}
         </span>

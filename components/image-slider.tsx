@@ -38,22 +38,32 @@ export function ImageSlider({
 
   if (visible.length === 0) return <ProductArt category={category} className={className} />;
 
+  const image = (
+    // Merchant photos are arbitrary files or URLs, so the browser loads them directly.
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={visible[current]}
+      alt={title}
+      className={`photo-live ${className} object-cover`}
+      draggable={false}
+      onError={() =>
+        setFailed((items) => (items.includes(visible[current]) ? items : [...items, visible[current]]))
+      }
+    />
+  );
   const photo = (
     <div
       key={visible[current]}
       className={direction === 0 ? undefined : "photo-swap"}
       style={{ ["--swap-x" as string]: direction > 0 ? "22px" : "-22px" }}
     >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={visible[current]}
-        alt={title}
-        className={`photo-live ${className} object-cover`}
-        draggable={false}
-        onError={() =>
-          setFailed((items) => (items.includes(visible[current]) ? items : [...items, visible[current]]))
-        }
-      />
+      {transitionName ? (
+        <ViewTransition name={transitionName} share="morph" enter="frame" exit="frame" default="none">
+          {image}
+        </ViewTransition>
+      ) : (
+        image
+      )}
     </div>
   );
 
@@ -84,18 +94,8 @@ export function ImageSlider({
             swiped.current = false;
           }}
         >
-          {transitionName ? (
-            <ViewTransition name={transitionName} share="morph" enter="frame" exit="frame" default="none">
-              {photo}
-            </ViewTransition>
-          ) : (
-            photo
-          )}
-        </Link>
-      ) : transitionName ? (
-        <ViewTransition name={transitionName} share="morph" enter="frame" exit="frame" default="none">
           {photo}
-        </ViewTransition>
+        </Link>
       ) : (
         photo
       )}

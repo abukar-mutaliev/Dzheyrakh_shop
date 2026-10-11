@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
 import { EmptyState } from "@/components/empty-state";
 import { PageTransition } from "@/components/page-transition";
 import { ProductCard } from "@/components/product-card";
@@ -33,7 +32,7 @@ async function CategoryCatalog({ params }: { params: Promise<{ category: string 
           />
         </div>
       ) : null}
-      <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <ul className="catalog-grid mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {visible.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
@@ -55,9 +54,7 @@ export default function CategoryPage({ params }: { params: Promise<{ category: s
   return (
     <PageTransition>
     <main className="mx-auto w-full max-w-5xl px-4 py-12 sm:py-16">
-      <Suspense fallback={<p className="text-foreground/60">Собираем полку...</p>}>
-        <CategoryCatalog params={params} />
-      </Suspense>
+      <CategoryCatalog params={params} />
     </main>
     </PageTransition>
   );

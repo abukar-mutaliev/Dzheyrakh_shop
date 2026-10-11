@@ -45,13 +45,18 @@ export function MotionStyles() {
       ::view-transition-new(site-header),
       ::view-transition-new(site-footer) { animation: none; }
       ::view-transition-group(.morph) {
-        animation-duration: 560ms;
-        animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+        animation-duration: 720ms;
+        animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 10;
+        border-radius: 1.75rem;
+        overflow: clip;
+        clip-path: inset(0 round 1.75rem);
       }
-      ::view-transition-group(.morph),
-      ::view-transition-image-pair(.morph),
-      ::view-transition-old(.morph),
-      ::view-transition-new(.morph),
+      ::view-transition-image-pair(.morph) {
+        height: 100%;
+        border-radius: 1.75rem;
+        overflow: clip;
+      }
       ::view-transition-group(.frame),
       ::view-transition-image-pair(.frame),
       ::view-transition-old(.frame),
@@ -61,14 +66,16 @@ export function MotionStyles() {
         clip-path: inset(0 round 1.75rem);
       }
       ::view-transition-old(.morph),
-      ::view-transition-new(.morph),
-      ::view-transition-old(.frame),
-      ::view-transition-new(.frame) {
+      ::view-transition-new(.morph) {
+        animation: none;
+        mix-blend-mode: normal;
         width: 100%;
         height: 100%;
         object-fit: cover;
+        object-position: center;
+        border-radius: 1.75rem;
       }
-      ::view-transition-image-pair(.morph) { animation-name: via-blur; }
+      ::view-transition-old(.morph) { opacity: 0; }
       ::view-transition-old(.rise) { animation: 180ms ease-in both fade reverse; }
       ::view-transition-new(.rise) {
         animation: 280ms ease-out 120ms both fade, 520ms cubic-bezier(0.22, 1, 0.36, 1) both slide-y;

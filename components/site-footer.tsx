@@ -5,8 +5,8 @@ import { shopConfig } from "@/lib/shop-config";
 export function SiteFooter() {
   const { contacts, shop } = shopConfig;
   return (
-    <footer className="mt-20 border-t border-foreground/10" style={{ viewTransitionName: "site-footer" }}>
-      <div className="mx-auto grid w-full max-w-5xl gap-8 px-4 py-10 sm:grid-cols-3">
+    <footer className="site-footer mt-20 border-t border-foreground/10" style={{ viewTransitionName: "site-footer" }}>
+      <div className="site-footer-grid mx-auto grid w-full max-w-5xl gap-8 px-4 py-10 sm:grid-cols-3">
         <div>
           <p className="font-serif text-2xl text-primary">{shop.name}</p>
           <p className="mt-2 max-w-xs text-sm leading-6 text-foreground/70">{shop.tagline}</p>
