@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import { AddToCartButton } from "@/components/add-to-cart-button";
 import { PageTransition } from "@/components/page-transition";
 import { ImageSlider } from "@/components/image-slider";
@@ -82,7 +83,9 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
   return (
     <PageTransition>
     <main className="mx-auto w-full max-w-5xl px-4 py-12 sm:py-16">
-      <ProductScreen params={params} />
+      <Suspense fallback={<p className="text-foreground/60">Собираем полку...</p>}>
+        <ProductScreen params={params} />
+      </Suspense>
     </main>
     </PageTransition>
   );

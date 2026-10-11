@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import { EmptyState } from "@/components/empty-state";
 import { PageTransition } from "@/components/page-transition";
 import { ProductCard } from "@/components/product-card";
@@ -54,7 +55,9 @@ export default function CategoryPage({ params }: { params: Promise<{ category: s
   return (
     <PageTransition>
     <main className="mx-auto w-full max-w-5xl px-4 py-12 sm:py-16">
-      <CategoryCatalog params={params} />
+      <Suspense fallback={<p className="text-foreground/60">Собираем полку...</p>}>
+        <CategoryCatalog params={params} />
+      </Suspense>
     </main>
     </PageTransition>
   );
