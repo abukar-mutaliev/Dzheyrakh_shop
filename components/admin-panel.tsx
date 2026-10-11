@@ -108,7 +108,7 @@ export function AdminPanel({
         <h1 className="mt-2 font-serif text-4xl">{current ? current.title : "Добавить на полку"}</h1>
         <p className="mt-3 text-sm leading-6 text-foreground/70">
           {local
-            ? "База ещё не подключена: товар и фото сохранятся на этом компьютере и сразу появятся в каталоге."
+            ? "База ещё не подключена: товар и фото сохранятся в файлах магазина на сервере и сразу появятся в каталоге."
             : "Товар запишется в базу магазина."}
         </p>
         <input type="hidden" name="id" value={current?.id ?? ""} />
